@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+
+        var courses = [
+            {
+                id: 1,
+                course_name: 'JavaScript',
+                price: 600,
+            },
+            {
+                id: 2,
+                course_name: 'bootstrap',
+                price: 400,
+            },
+            {
+                id: 3,
+                course_name: 'Angular',
+                price: 700,
+            },
+            {
+                id: 4,
+                course_name: 'NodeJS',
+                price: 800,
+            },
+        ];
+
+        Array.prototype.filter2 = function(callback) {
+            results = [];
+            arrayLength = this.length;
+
+            for(var i = 0; i < arrayLength; i++) {
+                    var element = callback(this[i], i)
+                    if(element) {
+                        results.unshift(element);
+                    }
+            }
+            return results;
+        }
+
+
+        console.log(courses.filter2((course, index) => {
+         
+                return course.price > 600
+          
+        }));
+
+    </script>
+</body>
+</html>

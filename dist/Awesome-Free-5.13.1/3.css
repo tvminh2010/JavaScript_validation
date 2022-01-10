@@ -1,0 +1,14 @@
+div.tieude {
+    border-bottom: 4px solid orange;
+}
+
+
+div.tieude h2 {
+    margin-bottom: -21px;
+    background-color: white;
+    display: inline-block;
+    position: relative;
+    top: 11px;
+    left: 39px;
+    padding: 2px;
+}

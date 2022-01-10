@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Site Description">
+  <meta name="author" content="Trinh Van Minh, HTML, CSS, Jquery, Web app developer">
+  <meta name="generator" content="Jekyll v4.0.1">
+  <!-- <link rel="stylesheet" href="dist/Awesome-Free-5.13.1/css/all.min.css">		FontAwesome-5.13.1 -->
+  <link rel="stylesheet" href="./../dist/Awesome-Free-5.14.0/css/all.min.css"> <!-- FontAwesome-5.14.0-->
+  <link rel="stylesheet" href="./../dist/css/bootstrap.min.css"> <!-- CoreBootstrap CSS -->
+  <link rel="stylesheet" href="formvalidation.css"> <!-- Custom CSS -->
+  <title>Document Title</title>
+</head>
+
+<body>
+  <div class="container-fluid">
+      <div class="div_form_center card p-4">
+          <form action="" class="form custom-form" id="form-1" method="post" action="/dologin">
+            <div class="text-center">
+              <h3 class="heading text-center">Thành viên đăng nhập</h3>
+              <p class="desc">Để truy cập tài nguyên miễn phí!</p>
+              <div class="spacer"></div>
+            </div>
+            <div class="form-group">
+              <label for="fullname">Name:</label>
+              <input type="text" class="form-control" id="fullname" name="fullname" placeholder="VD: Trịnh Văn Minh">
+              <span class="form-message text-danger text-small"></span>
+            </div>
+            <div class="form-group">
+              <label for="email">Email address:</label>
+              <input type="email" class="form-control" name="email" id="email" placeholder="VD:  tvminh@gmail.com">
+              <span class="form-message text-danger text-small"></span>
+            </div>
+            <div class="form-group">
+              <label for="password">Password:</label>
+              <input type="text" class="form-control" id="password" name="password">
+              <span class="form-message text-danger text-small"></span>
+            </div>
+            <div class="form-group">
+              <label for="confirm_password">Confirm Password:</label>
+              <input type="text" class="form-control" id="confirm_password" name="confirm_password">
+              <span class="form-message text-danger text-small"></span>
+            </div>
+
+            <div class="checkbox">
+              <label><input type="checkbox" name="remember"> Remember me</label>
+            </div>
+            <button type="submit" class="btn btn-success btn-block button-radius-10 mt-2">Đăng nhập</button>
+          </form>
+ 
+            <div class="text-center mt-3 pt-2 text-small bordered border-top">
+              <i class="fas fa-share flip mr-2"></i>
+               Đăng nhập nhanh hơn với <strong>Google</strong> (or) <strong>Facebook!</strong> 
+               <button type="submit" class="btn btn-block btn-sm button-radius-10 button-custom mt-3"><i class="fab fa-google mr-3"></i><strong>Đăng nhập với Google!</strong></button>
+               <button type="submit" class="btn btn-block btn-sm button-radius-10 button-custom mt-3"><i class="fab fa-facebook-square mr-3"></i><strong>Đăng nhập với Facebook!</strong></button>
+            </div>
+      </div>
+  </div>
+</body>
+
+</html>
+<script src="../dist/js/jquery-3.5.1.slim.min.js"></script> <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="../dist/js/bootstrap.bundle.min.js"></script> <!-- Bootstrap bundle already has popper.js -->
+<script src="formvalidation.js"></script> <!-- Optional custom JavaScript -->
+
+<script>
+
+
+  Validator ({
+    form: '#form-1',
+    errorSelector: '.form-message',
+    rules: [
+      Validator.isRequired('#fullname'),
+      Validator.isRequired('#email'),
+      Validator.isEmail('#email'),
+      
+      Validator.isRequired('#password'),
+      Validator.isPassword('#password', 6, 20),  //(min /max)
+
+      Validator.isRequired('#confirm_password', '#form-1 #password'),
+      Validator.isConfirmPassword('#confirm_password', '#form-1 #password'),
+      /*
+      Validator.isConfirmPassword('#confirm_password', function () {    //Có thể dùng kiểu này
+          return document.querySelector('#form-1 #password').value;
+      }),*/
+    ]
+  });
+</script>
