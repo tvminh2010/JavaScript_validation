@@ -65,3 +65,15 @@ console.log(`---------------------------------------------`);
 for (const key in flatArray) {
     console.log('REsult: ', key);
 }
+
+
+
+function makeFunc() {
+    var name = 'Mozilla';
+    return function displayName() {
+      alert(name);
+    }
+  }
+  
+  var myFunc = makeFunc();
+  myFunc();

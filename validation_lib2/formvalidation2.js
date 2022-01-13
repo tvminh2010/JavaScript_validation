@@ -17,8 +17,9 @@ function Validator (formSelector) {
         },
         min: function(value) {
             return function(min) {
-                return value.length > min ? undefined : `Vui lòng nhập ít nhất ${min} ký tự!`;
+                return value.length >= min ? undefined : `Vui lòng nhập ít nhất ${min} ký tự!`;
             }
+            
         },
     }
     /* ---------------------------------------- */
@@ -32,61 +33,77 @@ function Validator (formSelector) {
        //Nếu thấy form, lấy các thẻ inputs
        var inputs = formElement.querySelectorAll('input[name][rules]');
 
-       //Lặp qua các inputs của form
+       //Lọc các inputs của form
        inputs.forEach(input => {
 
-           //Lấy ra mảng rules của mỗi input (dạng mảng), và input.name của mỗi input
+           //Lấy ra mảng rules của mỗi input (dạng mảng), và giá trị input.name của mỗi input
            var rules = input.getAttribute('rules').split('|');
            var inputname = input.name;
 
-           //Lọc luôn mảng rules của mỗi input
+           //Lọc các rules của mỗi input vừa lấy được
            for(var rule of rules) {
 
-                //Nếu rule có dấu ':' chỉ lấy rule là phần tử đầu của mảng
+                var ruleFunc =  validationRules[rule];
+
                 if(rule.includes(':')) {
                     ruleInfos = rule.split(':')
-                    rule = ruleInfos[0].trim();
+                    rule = ruleInfos[0].trim();             //Nếu rule có dấu ':' lấy rule là phần tử đầu của mảng
+                    parametes = ruleInfos.splice(1)         //Lấy các tham số từ vị trí thứ 2 đến cuối mảng đưa vào parameters
+                    ruleFunc = validationRules[rule](...parametes);     //Lấy hàm bên trong của rule kèm thêm tham số vào, sử dụng closure và 
 
-                    //Cắt mảng từ vị trí thứ 2 đến cuối gán cho ruleParameters
-                    parametes = ruleInfos.splice(1)
-                    console.log(parametes);
                 } else {
                     rule = rule.trim();
                 }
                 //Nếu formRules[input.name] không phải mảng, là lần đầu chạy
                 // => tạo mảng và gán phần tử đầu là function có tên là rule,
                 if(!Array.isArray(formRules[input.name])) {                  
-                    formRules[inputname] = [validationRules[rule]];
+                    formRules[inputname] = [ruleFunc];
                 } 
 
-                //Nếu đã là mảng, push tiếp phần tử tiếp theo 
+                //Nếu đã là mảng, push tiếp ruleFunc làm phần tử tiếp theo 
                 //là function tương ứng với rule tiếp theo của mỗi input.name
                 else {
-                    formRules[inputname].push(validationRules[rule]); 
+                    formRules[inputname].push(ruleFunc); 
                 }
-           }
-       })//Kết thúc lặp các inputs
-       //console.log(formRules);
+           }    //Kết thúc lọc các rules của mỗi input
+           //Lắng nghe sự kiện validate
+
+           input.onblur = handlerValidate;
+
+       })//Kết thúc lọc các inputs
+       /* ------------------------------------------------- */
+       function handlerValidate(event) {
+            var rules = formRules[event.target.name];
+            var errorMessage;
+            rules.find(function(rule) {
+                errorMessage = rule(event.target.value);
+                return errorMessage;
+            })
+
+
+            //Nếu có lỗi thì hiển thị ra UI
+            if(errorMessage) {
+                var formGroup = getParent(event.target, '.form-group');
+                if(formGroup) {
+                    var messageElement = formGroup.querySelector('.form-message');
+                    if(messageElement) {
+                        messageElement.innerText = errorMessage;
+                    }
+                        
+                }
+                
+            }
+
+       }
     } 
-}
-
-/*
-object = {
-    make: 'Ford',
-    model: 'Mustang',
-    year: 1969,
-};
-console.log(object);
-
-for (const prop in object) {
-    if (object.hasOwnProperty(prop)) {
-        console.log(`object.${prop} = ${object[prop]}`);
+    /* ------------------------------------------------- */
+    function getParent(element, selector) {
+        while (element.parentElement) {
+            if(element.parentElement.matches(selector)) {
+                return element.parentElement;
+            }
+            element = element.parentElement;
+        }
     }
-}*/
-
-
-var min = function(value) {
-    return function(min) {
-        return value.length > min ? undefined : `Vui lòng nhập ít nhất ${min} ký tự!`;
-    }
+    /* ------------------------------------------------- */  
 }
