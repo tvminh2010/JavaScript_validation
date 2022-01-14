@@ -1,5 +1,8 @@
 
-function Validator (formSelector) { 
+function Validator (formSelector, options ={}) { 
+    /*  ES5, gán giá trị cho tham số options nếu sử dụng ES5
+        if(!options) { options = {}; }
+    */
     /**
      * Tạo function chứa các validation rules, 
      * Có tên là validationRules
@@ -97,10 +100,16 @@ function Validator (formSelector) {
        function handlerValidate(event) {
             var rules = formRules[event.target.name];
             var errorMessage;
+
+            for(var rule of rules) {
+                errorMessage = rule(event.target.value);
+                if(errorMessage) break;
+            }
+            /*
             rules.find(function(rule) {
                 errorMessage = rule(event.target.value);
                 return errorMessage;
-            })
+            })*/
 
 
             //Nếu có lỗi thì hiển thị ra UI
@@ -110,7 +119,7 @@ function Validator (formSelector) {
                     var messageElement = formGroup.querySelector('.form-message');
                     if(messageElement) {
                         messageElement.innerText = errorMessage;
-                        this.classList.add('field-invalid')
+                        event.target.classList.add('field-invalid')
                     }
                         
                 }
@@ -119,20 +128,30 @@ function Validator (formSelector) {
                     var messageElement = formGroup.querySelector('.form-message');
                     if(messageElement) {
                         messageElement.innerText = '';
-                        this.classList.remove('field-invalid')
+                        event.target.classList.remove('field-invalid')
                     }
                         
                 }
             }
-
+            return !errorMessage;
        }
        /* ------------------------------------------------- */
        formElement.onsubmit = function (event)  {
             event.preventDefault()
             var inputs = formElement.querySelectorAll('input[name][rules]');
-            inputs.forEach(input => {
-                handlerValidate({ target: input })
-            })
+            var isValid = true;
+            for (var input of inputs) {
+                if(!handlerValidate({ target: input })) {
+                    isValid = false;
+                }
+            }
+            if(isValid) {
+                if(typeof options.onSubmit == 'function') {
+                    options.onSubmit();
+                } else {
+                     formElement.submit(); 
+                }
+            }
         }
         /* ------------------------------------------------- */
     } 

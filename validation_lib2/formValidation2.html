@@ -71,5 +71,15 @@
 
 
 <script>
-  Validator ('#form-1');
+  Validator ('#form-1', {
+    onSubmit: function() {
+      console.log('Call API...');
+    }
+  });
 </script>
+
+
+<!-- Nếu sử dụng form submit, mà không sử dụng submit bằng code
+<script>
+  Validator ('#form-1');
+</script> -->
