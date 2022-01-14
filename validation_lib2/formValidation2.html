@@ -18,7 +18,7 @@
 <body>
   <div class="container-fluid">
       <div class="div_form_center card p-4">
-          <form action="" class="form custom-form" id="form-1" method="post" action="/dologin">
+          <form action="" class="form custom-form" id="form-1" method="post" action="/doaction.html">
             <div class="text-center">
               <h3 class="heading text-center">Thành viên đăng nhập</h3>
               <p class="desc">Để truy cập tài nguyên miễn phí!</p>
@@ -32,18 +32,18 @@
             <div class="form-group">
               <div class="linhtinh">
                 <label for="email">Email address:</label>
-                <input type="email" name="email" rules="required|email" class="form-control" placeholder="VD:  tvminh@gmail.com">
+                <input type="email" name="email" id="email" rules="required|email" class="form-control" placeholder="VD:  tvminh@gmail.com">
                 <span class="form-message text-danger text-small"></span>
               </div>
             </div>
             <div class="form-group">
               <label for="password">Password:</label>
-              <input type="text" name="password" rules="required|min:6" class="form-control">
+              <input type="text" name="password" id="password" rules="required|min_max:6:9" class="form-control">
               <span class="form-message text-danger text-small"></span>
             </div>
             <div class="form-group">
               <label for="confirm_password">Confirm Password:</label>
-              <input type="text" class="form-control" name="confirm_password">
+              <input type="text" class="form-control" name="confirm_password" id="confirm_password" rules="required | confirm_password=input#password">
               <span class="form-message text-danger text-small"></span>
             </div>
 

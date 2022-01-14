@@ -12,6 +12,7 @@
 
 .field-invalid {
     border-color: rgb(255, 81, 0) !important;
+    background-color: rgb(245, 242, 209);
 }
 
 .button-radius-10 {
